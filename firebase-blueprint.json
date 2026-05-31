@@ -1,0 +1,263 @@
+{
+  "entities": {
+    "user": {
+      "title": "User",
+      "description": "Represents a user of the Mamabora platform.",
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "description": "User's email address."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User's display name."
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "URL to the user's profile picture."
+        },
+        "onboardingCompleted": {
+          "type": "boolean",
+          "description": "Flag indicating if the user has completed the onboarding process."
+        }
+      },
+      "required": [
+        "email",
+        "displayName"
+      ]
+    },
+    "baby": {
+      "title": "Baby",
+      "description": "Information about a baby associated with a user.",
+      "type": "object",
+      "properties": {
+        "ownerId": {
+          "type": "string",
+          "description": "The UID of the user who owns this baby profile."
+        },
+        "name": {
+          "type": "string",
+          "description": "The name of the baby."
+        },
+        "birthDate": {
+          "type": "string",
+          "format": "date-time",
+          "description": "The birth date/due date of the baby."
+        },
+        "gender": {
+          "type": "string",
+          "enum": [
+            "boy",
+            "girl",
+            "other"
+          ],
+          "description": "The gender of the baby."
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the profile was created."
+        }
+      },
+      "required": [
+        "ownerId",
+        "name",
+        "birthDate"
+      ]
+    },
+    "log": {
+      "title": "Tracker Log",
+      "description": "A single entry in the baby's daily tracker.",
+      "type": "object",
+      "properties": {
+        "babyId": {
+          "type": "string",
+          "description": "The ID of the baby this log belongs to."
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "feeding",
+            "diaper",
+            "sleep",
+            "growth",
+            "milestone"
+          ],
+          "description": "The type of activity being logged."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the activity occurred."
+        },
+        "notes": {
+          "type": "string",
+          "description": "Optional notes about the activity."
+        },
+        "data": {
+          "type": "object",
+          "description": "Specific data for the log type (e.g., amount for feeding)."
+        }
+      },
+      "required": [
+        "babyId",
+        "type",
+        "timestamp"
+      ]
+    },
+    "chatSession": {
+      "title": "Chat Session",
+      "description": "A history of interaction between a user and the AI assistant.",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "The UID of the user who owns this session."
+        },
+        "title": {
+          "type": "string",
+          "description": "A brief summary of the conversation."
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Last time a message was sent in this session."
+        }
+      },
+      "required": [
+        "userId",
+        "updatedAt"
+      ]
+    },
+    "message": {
+      "title": "Message",
+      "description": "A single message in a chat session.",
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string",
+          "description": "The ID of the chat session this message belongs to."
+        },
+        "text": {
+          "type": "string",
+          "description": "The content of the message."
+        },
+        "sender": {
+          "type": "string",
+          "enum": [
+            "user",
+            "ai",
+            "system"
+          ],
+          "description": "Who sent the message."
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the message was sent."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Optional URL to an image attached to the message."
+        }
+      },
+      "required": [
+        "sessionId",
+        "text",
+        "sender",
+        "timestamp"
+      ]
+    },
+    "nutritionTask": {
+      "title": "Nutrition Task",
+      "description": "A food item or nutrition related task for a baby.",
+      "type": "object",
+      "properties": {
+        "babyId": { "type": "string" },
+        "foodName": { "type": "string" },
+        "status": { "type": "string", "enum": ["to_try", "tried", "allergy"] },
+        "reaction": { "type": "string" },
+        "triedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["babyId", "foodName", "status"]
+    },
+    "village": {
+      "title": "Community Village",
+      "description": "A group for mothers based on due date or region.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "type": { "type": "string", "enum": ["dueDate", "region", "topic"] },
+        "memberCount": { "type": "number" }
+      },
+      "required": ["name", "type"]
+    },
+    "villageMessage": {
+      "title": "Village Message",
+      "description": "A message sent in a village community.",
+      "type": "object",
+      "properties": {
+        "villageId": { "type": "string" },
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "userPhoto": { "type": "string" },
+        "text": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["villageId", "userId", "text", "timestamp"]
+    },
+    "wellnessLog": {
+      "title": "Wellness Log",
+      "description": "A record of the mother's mood, hydration, or sleep.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "type": { "type": "string", "enum": ["mood", "hydration", "sleep", "recovery"] },
+        "value": { "type": "number" },
+        "notes": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "type", "timestamp"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "user",
+      "description": "User profile data."
+    },
+    "/babies/{babyId}": {
+      "schema": "baby",
+      "description": "Baby profile data."
+    },
+    "/babies/{babyId}/logs/{logId}": {
+      "schema": "log",
+      "description": "Activity logs for a specific baby."
+    },
+    "/babies/{babyId}/nutritionLog/{taskId}": {
+      "schema": "nutritionTask",
+      "description": "Food introduction tracking."
+    },
+    "/chatSessions/{sessionId}": {
+      "schema": "chatSession",
+      "description": "A conversation between a user and the AI."
+    },
+    "/chatSessions/{sessionId}/messages/{messageId}": {
+      "schema": "message",
+      "description": "Messages within a chat session."
+    },
+    "/villages/{villageId}": {
+      "schema": "village",
+      "description": "Community groups."
+    },
+    "/villages/{villageId}/messages/{messageId}": {
+      "schema": "villageMessage",
+      "description": "Messages in community villages."
+    },
+    "/wellnessLogs/{logId}": {
+      "schema": "wellnessLog",
+      "description": "Maternal wellness tracking."
+    }
+  }
+}
